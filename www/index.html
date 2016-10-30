@@ -1,13 +1,13 @@
 <!DOCTYPE HTML>
-<html>
-<head>
+<html ng-app="myApp">
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta http-equiv="Content-Security-Policy" content="default-src * data:; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
     <script src="components/loader.js"></script>
-    <script src="lib/angular/angular.min.js"></script>
-    <script src="lib/onsenui/js/onsenui.min.js"></script>
-    <script src="lib/onsenui/js/angular-onsenui.min.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/onsenui/js/onsenui.js"></script>
+    <script src="lib/onsenui/js/angular-onsenui.js"></script>
 
     <link rel="stylesheet" href="components/loader.css">
     <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
@@ -15,86 +15,62 @@
     <link rel="stylesheet" href="css/style.css">
 
     <script>
-        ons.bootstrap()
-          .controller('AppController', function($scope) {
-            $scope.load = function(page) {
-              $scope.mySplitterContent.load(page)
-            }
-            $scope.open = function() {
-              $scope.mySplitterSide.open();
-            }
-          });
-        ons.ready(function() {
-            console.log("Onsen UI is ready!");
-        });
+      var myModule = angular.module('myApp', ['onsen']);
+      myModule.controller('aaa', function($scope){
+      
+      });
+      ons.ready(function(){
+      document.querySelector('ons-fab').addEventListener('click', function(event) {
+      // Button is clicked!
+      myNavigator.pushPage("taskEdit.html", {data: {command: 'create'}});
+      })
+      });
     </script>
-</head>
-<body ng-controller="AppController as app">
-  <ons-splitter>
-    <ons-splitter-side var="mySplitterSide" side="left" width="220px" collapse swipeable>
+  </head>
+  <body>
+    
+    <ons-navigator title="Navigator" var="myNavigator">
       <ons-page>
-        <ons-list>
-          <ons-list-item ng-click="load('home.html')" tappable>
-            Home
-          </ons-list-item>
-          <ons-list-item ng-click="load('settings.html')" tappable>
-            Settings
-          </ons-list-item>
-          <ons-list-item ng-click="load('about.html')" tappable>
-            About
-          </ons-list-item>
-        </ons-list>
+	<ons-toolbar>
+	  <div class="center">List Page</div>
+	  <div class="right" ng-controller="aaa">
+	    <ons-toolbar-button modifier="quiet" ng-click="myNavigator.pushPage('settings.html')"><ons-icon icon="cog"></ons-icon></ons-button>
+	  </div>
+	</ons-toolbar>
+	<ons-fab position="bottom right">
+	  <ons-icon icon="md-plus"></ons-icon>
+	</ons-fab>
+	<div style="text-align: center">
+	  <br>
+	  <ons-button modifier="light" ng-click="myNavigator.pushPage('taskEdit.html', { animation : 'slide' } )">
+	    Push Page
+	  </ons-button>
+	</div>
       </ons-page>
-    </ons-splitter-side>
-    <ons-splitter-content var="mySplitterContent" page="home.html"></ons-splitter-content>
-  </ons-splitter>
+    </ons-navigator>
 
-  <ons-template id="home.html">
-    <ons-page>
+    <ons-template id="taskEdit.html">
       <ons-toolbar>
-        <div class="left">
-          <ons-toolbar-button ng-click="open()">
-            <ons-icon icon="md-menu"></ons-icon>
-          </ons-toolbar-button>
-        </div>
-        <div class="center">
-          Main
-        </div>
+	<div class="left">
+	  <ons-back-button>Back</ons-back-button>
+	</div>
+	<div class="center">Edit Page</div>
       </ons-toolbar>
-      <p style="text-align: center; opacity: 0.6; padding-top: 20px;">
-        Swipe right to open the menu!
-      </p>
-    </ons-page>
-  </ons-template>
-
-  <ons-template id="settings.html">
-    <ons-page>
+      <div style="text-align: center">
+	<input type="text" class="text-input" ng-model="text" placeholder="Type here" style="display: block; width: 100%">
+	<br/>aaa
+	{{myNavigator.topPage.data.command}}
+      </div>
+    </ons-template>
+    
+    <ons-template id="settings.html">
       <ons-toolbar>
-        <div class="left">
-          <ons-toolbar-button ng-click="open()">
-            <ons-icon icon="md-menu"></ons-icon>
-          </ons-toolbar-button>
-        </div>
-        <div class="center">
-          Settings
-        </div>
+	<div class="left">
+	  <ons-back-button>Back</ons-back-button>
+	</div>
+	<div class="center">Settings Page</div>
       </ons-toolbar>
-    </ons-page>
-  </ons-template>
-
-  <ons-template id="about.html">
-    <ons-page>
-      <ons-toolbar>
-        <div class="left">
-          <ons-toolbar-button ng-click="open()">
-            <ons-icon icon="md-menu"></ons-icon>
-          </ons-toolbar-button>
-        </div>
-        <div class="center">
-          About
-        </div>
-      </ons-toolbar>
-    </ons-page>
-  </ons-template>
-</body>
+    </ons-template>
+    
+  </body>
 </html>
